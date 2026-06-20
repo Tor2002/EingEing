@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}EingEing — Tip{% endblock %}
+{% block content %}
+  <div class="section-label">ให้กำลังใจ EingEing</div>
+  <div class="tip-wrap">
+    <div class="qr-box">
+      <img src="{{ url_for('static', filename='images/qr.jpg') }}"
+           alt="QR PromptPay"
+           onerror="this.style.display='none'; document.getElementById('qrPlaceholder').style.display='flex';"
+           style="width:100%;height:100%;object-fit:contain;border-radius:8px;">
+      <div id="qrPlaceholder" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;color:#9B8FA8;font-size:0.78rem;text-align:center;gap:8px">
+        <div style="font-size:2rem">📷</div><div>วาง qr.jpg<br>ใน static/images/</div>
+      </div>
+    </div>
+    <div class="tip-info">
+      <h2>ขอบคุณ<br/>ทุกการให้กำลังใจ</h2>
+      <p>สแกน QR Code หรือเลือกจำนวนแล้วกด <strong>ให้ทิป</strong> เพื่อชำระผ่านโมบายแบงก์กิ้งได้เลยนะคะ</p>
+      <div class="tip-name">ชื่อบัญชี: <strong>{{ account_name }}</strong></div>
+      <div class="tip-amounts">
+        <div class="tip-amt" data-amount="20">฿20</div>
+        <div class="tip-amt" data-amount="50">฿50</div>
+        <div class="tip-amt" data-amount="100">฿100</div>
+        <div class="tip-amt" data-amount="200">฿200</div>
+        <div class="tip-amt" data-amount="500">฿500</div>
+        <div class="tip-amt" data-amount="1000">฿1,000</div>
+        <div class="tip-amt tip-custom" data-amount="custom">อื่นๆ</div>
+      </div>
+      <div class="custom-amount-wrap" id="customAmountWrap" style="display:none">
+        <input type="number" id="customAmount" class="custom-amount-input" placeholder="กรอกจำนวนเงิน (บาท)" min="1">
+      </div>
+      <button class="tip-pay-btn" id="tipPayBtn" disabled>เลือกจำนวนก่อนนะคะ</button>
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}
+<script>
+const PROMPTPAY_ID = "{{ promptpay_id }}";
+const amtBtns = document.querySelectorAll('.tip-amt');
+const payBtn  = document.getElementById('tipPayBtn');
+const customWrap = document.getElementById('customAmountWrap');
+const customInp  = document.getElementById('customAmount');
+let selectedAmt = null;
+
+function updatePayBtn() {
+  const amt = selectedAmt === 'custom' ? parseInt(customInp.value) : selectedAmt;
+  if (amt && amt > 0) {
+    payBtn.disabled = false;
+    payBtn.textContent = `ให้ทิป ฿${Number(amt).toLocaleString()} →`;
+  } else {
+    payBtn.disabled = true;
+    payBtn.textContent = 'เลือกจำนวนก่อนนะคะ';
+  }
+}
+
+amtBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    amtBtns.forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+    selectedAmt = btn.dataset.amount === 'custom' ? 'custom' : parseInt(btn.dataset.amount);
+    customWrap.style.display = btn.dataset.amount === 'custom' ? 'block' : 'none';
+    if (btn.dataset.amount !== 'custom') customInp.value = '';
+    updatePayBtn();
+  });
+});
+
+customInp.addEventListener('input', updatePayBtn);
+
+payBtn.addEventListener('click', () => {
+  const amt = selectedAmt === 'custom' ? parseInt(customInp.value) : selectedAmt;
+  if (!amt || amt <= 0) return;
+  window.open(`https://promptpay.io/${PROMPTPAY_ID}/${amt}`, '_blank');
+});
+</script>
+{% endblock %}

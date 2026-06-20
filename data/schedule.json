@@ -1,0 +1,121 @@
+{
+  "mon": [
+    {
+      "venue": "Laolue",
+      "time": "19.30-20.30",
+      "status": "booked"
+    },
+    {
+      "venue": "Cozy",
+      "time": "21.15-22.15",
+      "status": "booked"
+    },
+    {
+      "venue": "Cozy",
+      "time": "22.45-23.45",
+      "status": "booked"
+    }
+  ],
+  "tue": [
+    {
+      "venue": "Undo",
+      "time": "19.30-20.30",
+      "status": "booked"
+    },
+    {
+      "venue": "Blue TG",
+      "time": "21.00-22.00",
+      "status": "booked"
+    },
+    {
+      "venue": "Kado",
+      "time": "22.30-23.30",
+      "status": "booked"
+    }
+  ],
+  "wed": [
+    {
+      "venue": "WhiteHouse",
+      "time": "19.30-20.30",
+      "status": "booked"
+    },
+    {
+      "venue": "Fomo",
+      "time": "21.00-22.00",
+      "status": "booked"
+    },
+    {
+      "venue": "Free",
+      "time": "22.30-00.00",
+      "status": "free"
+    }
+  ],
+  "thu": [
+    {
+      "venue": "Old SC",
+      "time": "19.00-20.30",
+      "status": "booked"
+    },
+    {
+      "venue": "Library",
+      "time": "21.00-22.00",
+      "status": "booked"
+    },
+    {
+      "venue": "WhiteHouse",
+      "time": "22.30-00.00",
+      "status": "booked"
+    }
+  ],
+  "fri": [
+    {
+      "venue": "Free",
+      "time": "19.30-20.30",
+      "status": "free"
+    },
+    {
+      "venue": "Posh",
+      "time": "21.00-22.00",
+      "status": "booked"
+    },
+    {
+      "venue": "Free",
+      "time": "22.30-00.00",
+      "status": "free"
+    }
+  ],
+  "sat": [
+    {
+      "venue": "Free",
+      "time": "19.30-20.30",
+      "status": "free"
+    },
+    {
+      "venue": "SaveZone",
+      "time": "22.50-23.50",
+      "status": "booked"
+    },
+    {
+      "venue": "Free",
+      "time": "22.30-00.00",
+      "status": "free"
+    }
+  ],
+  "sun": [
+    {
+      "venue": "Free",
+      "time": "19.30-20.30",
+      "status": "free"
+    },
+    {
+      "venue": "Lager",
+      "time": "21.00-22.00",
+      "status": "booked"
+    },
+    {
+      "venue": "Free",
+      "time": "22.30-00.00",
+      "status": "free"
+    }
+  ]
+}

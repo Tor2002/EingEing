@@ -1,0 +1,151 @@
+{% extends "admin_base.html" %}
+{% block title %}ตารางงาน — Admin{% endblock %}
+{% block head %}
+<style>
+  /* ── Single source of truth: one set of inputs, CSS handles layout ── */
+  .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.6rem;margin-bottom:1rem}
+  .day-col{background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden;min-width:0}
+  .day-head{background:#FEF0F5;padding:.6rem .5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+  .day-head-title{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .day-head-title .th-name{display:none}
+  .day-count{font-size:.65rem;color:var(--muted);background:white;padding:.1rem .45rem;border-radius:20px;border:1px solid var(--border)}
+
+  .day-slots{padding:.45rem;display:flex;flex-direction:column;gap:.45rem}
+  .slot-item{border-radius:9px;padding:.5rem .55rem;border:1px solid var(--border);background:#FDF6F0;transition:border-color .2s}
+  .slot-item:focus-within{border-color:var(--pink)}
+  .slot-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem}
+  .slot-num{font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .slot-input{width:100%;padding:.35rem .5rem;border:1px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--ink);background:white;margin-top:.25rem}
+  .slot-input:focus{outline:none;border-color:var(--pink)}
+  select.slot-input{cursor:pointer}
+  .status-booked{border-left:3px solid var(--pink)}
+  .status-free{border-left:3px solid #A8DECE}
+  .btn-del{background:#FCE4EC;color:#C05070;font-size:.64rem;padding:.2rem .5rem;border-radius:16px;border:none;cursor:pointer;flex-shrink:0}
+  .btn-del:hover{background:#f8cdd9}
+  .btn-add-slot{background:#E0F7F0;color:#2D7A5A;font-size:.7rem;padding:.32rem .6rem;border-radius:20px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin:.35rem 0 .25rem;transition:background .2s}
+  .btn-add-slot:hover{background:#c8efe6}
+
+  .save-bar{background:white;border-radius:12px;padding:1rem 1.4rem;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;position:sticky;bottom:1rem;box-shadow:0 4px 20px rgba(74,63,85,0.1)}
+  .save-hint{font-size:.8rem;color:var(--muted)}
+
+  /* ── MOBILE: switch grid → 1 column, mobile-grid for venue/time ── */
+  @media(max-width:700px){
+    .week-grid{grid-template-columns:1fr;gap:.7rem}
+    .day-head-title .th-name{display:inline}
+    .day-head-title .th-short{display:none}
+    .day-slots{padding:.6rem}
+    .slot-item{padding:.6rem .65rem}
+    .slot-venue-time{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+    .slot-venue-time .slot-input{margin-top:0}
+    .slot-status-wrap{margin-top:.4rem}
+    .save-bar{flex-direction:column;align-items:stretch;text-align:center;bottom:.5rem;gap:.6rem}
+  }
+  @media(min-width:701px){
+    .slot-venue-time{display:contents}
+  }
+</style>
+{% endblock %}
+{% block content %}
+  <div class="page-title">จัดการ<span>ตาราง</span></div>
+  <p style="font-size:.8rem;color:var(--muted);margin-bottom:1.1rem">แก้ไขแต่ละวันได้เลย กด + เพิ่ม slot หรือ ✕ ลบ slot แล้วกด บันทึก ด้านล่าง</p>
+
+  <form method="POST" action="/admin/schedule/save" id="scheduleForm">
+    {% set days = [('mon','จันทร์','Mon'),('tue','อังคาร','Tue'),('wed','พุธ','Wed'),('thu','พฤหัส','Thu'),('fri','ศุกร์','Fri'),('sat','เสาร์','Sat'),('sun','อาทิตย์','Sun')] %}
+
+    <div class="week-grid">
+      {% for day_key, day_th, day_en in days %}
+      {% set slots = schedule.get(day_key, []) %}
+      <div class="day-col">
+        <div class="day-head">
+          <div class="day-head-title">
+            <span class="th-short">{{ day_en }}</span>
+            <span class="th-name">{{ day_th }} ({{ day_en }})</span>
+          </div>
+          <div class="day-count" id="count-{{ day_key }}">{{ slots|length }} slot</div>
+        </div>
+        <div class="day-slots" id="slots-{{ day_key }}">
+          {% for slot in slots %}
+          <div class="slot-item status-{{ slot.status }}">
+            <div class="slot-top">
+              <span class="slot-num">Slot {{ loop.index }}</span>
+              <button type="button" class="btn-del" onclick="removeSlot(this,'{{ day_key }}')">✕ ลบ</button>
+            </div>
+            <div class="slot-venue-time">
+              <input class="slot-input" type="text" name="{{ day_key }}_venue" value="{{ slot.venue }}" placeholder="สถานที่">
+              <input class="slot-input" type="text" name="{{ day_key }}_time" value="{{ slot.time }}" placeholder="19.30-20.30">
+            </div>
+            <div class="slot-status-wrap">
+              <select class="slot-input" name="{{ day_key }}_status" onchange="updateBorder(this)">
+                <option value="booked" {% if slot.status=='booked' %}selected{% endif %}>🔴 มีงาน</option>
+                <option value="free"   {% if slot.status=='free'   %}selected{% endif %}>🟢 ว่าง</option>
+              </select>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div style="padding:.3rem .5rem .5rem">
+          <button type="button" class="btn-add-slot" onclick="addSlot('{{ day_key }}')">+ เพิ่ม slot</button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="save-bar">
+      <span class="save-hint">💡 แก้ไขเสร็จแล้วกด บันทึก เพื่ออัปเดตหน้าเว็บ</span>
+      <button type="submit" class="btn btn-pink" style="padding:.7rem 2rem;font-size:.88rem">💾 บันทึกตาราง</button>
+    </div>
+  </form>
+{% endblock %}
+{% block scripts %}
+<script>
+function addSlot(day) {
+  const container = document.getElementById('slots-' + day);
+  const idx = container.children.length + 1;
+  const div = document.createElement('div');
+  div.className = 'slot-item status-booked';
+  div.innerHTML = `
+    <div class="slot-top">
+      <span class="slot-num">Slot ${idx}</span>
+      <button type="button" class="btn-del" onclick="removeSlot(this,'${day}')">✕ ลบ</button>
+    </div>
+    <div class="slot-venue-time">
+      <input class="slot-input" type="text" name="${day}_venue" placeholder="สถานที่">
+      <input class="slot-input" type="text" name="${day}_time" placeholder="19.30-20.30">
+    </div>
+    <div class="slot-status-wrap">
+      <select class="slot-input" name="${day}_status" onchange="updateBorder(this)">
+        <option value="booked">🔴 มีงาน</option>
+        <option value="free">🟢 ว่าง</option>
+      </select>
+    </div>`;
+  container.appendChild(div);
+  updateCount(day);
+  div.querySelector('input').focus();
+}
+
+function removeSlot(btn, day) {
+  if (!confirm('ลบ slot นี้?')) return;
+  btn.closest('.slot-item').remove();
+  updateCount(day);
+}
+
+function updateBorder(sel) {
+  const item = sel.closest('.slot-item');
+  item.classList.remove('status-booked', 'status-free');
+  item.classList.add('status-' + sel.value);
+}
+
+function updateCount(day) {
+  const container = document.getElementById('slots-' + day);
+  const countEl = document.getElementById('count-' + day);
+  if (countEl) countEl.textContent = container.children.length + ' slot';
+}
+
+// ป้องกันการ submit ฟอร์มซ้ำขณะกำลังโหลด
+document.getElementById('scheduleForm').addEventListener('submit', function() {
+  const btn = this.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = '⏳ กำลังบันทึก...';
+});
+</script>
+{% endblock %}

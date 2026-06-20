@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "thumb": "video1.jpg",
+    "title": "EingEing Live Performance #1",
+    "venue": "TikTok Live",
+    "date": "",
+    "url": "https://www.tiktok.com/@eingeing1010/video/7571747784508935442",
+    "color": "linear-gradient(135deg,#FDDDE6,#F9C4A8)"
+  },
+  {
+    "id": 2,
+    "thumb": "video2.jpg",
+    "title": "EingEing Live Performance #2",
+    "venue": "TikTok Live",
+    "date": "",
+    "url": "https://www.tiktok.com/@eingeing1010/video/7620503970099776789",
+    "color": "linear-gradient(135deg,#E8E0FF,#C9BCEF)"
+  },
+  {
+    "id": 3,
+    "thumb": "video3.jpg",
+    "title": "EingEing Live Performance #3",
+    "venue": "TikTok Live",
+    "date": "",
+    "url": "https://www.tiktok.com/@eingeing1010/video/7519221458514545928",
+    "color": "linear-gradient(135deg,#C8F0E4,#A8DECE)"
+  },
+  {
+    "id": 4,
+    "thumb": "video4.jpg",
+    "title": "EingEing Live Performance #4",
+    "venue": "TikTok Live",
+    "date": "",
+    "url": "https://www.tiktok.com/@eingeing1010/video/7499548392423509266",
+    "color": "linear-gradient(135deg,#FFF3C8,#F7E0A0)"
+  }
+]

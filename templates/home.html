@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}EingEing — Home{% endblock %}
+{% block content %}
+  <div class="hero">
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatarSlider">
+        <img class="slide active" src="{{ url_for('static', filename='images/profile1.jpg') }}">
+        <img class="slide" src="{{ url_for('static', filename='images/profile2.jpg') }}">
+        <img class="slide" src="{{ url_for('static', filename='images/profile3.jpg') }}">
+        <img class="slide" src="{{ url_for('static', filename='images/profile4.jpg') }}">
+      </div>
+      <div class="avatar-tag">Available to Book</div>
+    </div>
+    <div class="hero-text">
+      <h1>Live Music<br/>by <em>EingEing</em></h1>
+      <p>นักร้องและนักดนตรีที่นำเสียงเพลงมาสร้างบรรยากาศพิเศษในทุกงาน ไม่ว่าจะเป็นเพลง Pop, R&amp;B หรือ Soul</p>
+      <div class="tags">
+        <span class="tag tag-pop">Pop</span><span class="tag tag-rb">R&amp;B</span>
+        <span class="tag tag-ac">Soul</span><span class="tag tag-live">Hip Hop</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">ตารางงานประจำสัปดาห์</div>
+  <div class="week-grid">
+    {% set days = [('mon','Mon'),('tue','Tue'),('wed','Wed'),('thu','Thu'),('fri','Fri'),('sat','Sat'),('sun','Sun')] %}
+    {% for day_key, day_en in days %}
+    {% set slots = schedule.get(day_key, []) %}
+    <div class="day-col">
+      <div class="day-head">{{ day_en }}</div>
+      <div class="slots">
+        {% if slots %}
+          {% for slot in slots %}
+          <div class="slot slot-{{ slot.status }}">
+            <div class="slot-venue">{{ slot.venue }}</div>
+            <div class="slot-time">{{ slot.time }}</div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="slot slot-free">
+            <div class="slot-venue">Free</div>
+            <div class="slot-time">ทั้งวัน</div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="schedule-legend">
+    <div class="legend-item"><div class="legend-dot booked"></div><span>มีงาน</span></div>
+    <div class="legend-item"><div class="legend-dot free"></div><span>ว่าง (รับงานได้)</span></div>
+  </div>
+
+  <div class="contact-section">
+    <div class="contact-section-header">
+      <div class="section-label" style="margin-bottom:0">ติดต่องาน</div>
+      <p class="contact-section-sub">สนใจจองคิว หรือสอบถามรายละเอียดได้เลยนะคะ</p>
+    </div>
+    <div class="contact-cards">
+      <a class="contact-card" href="tel:0979163542">
+        <div class="contact-card-icon">📞</div>
+        <div class="contact-card-label">โทรศัพท์</div>
+        <div class="contact-card-value">097-916-3542</div>
+      </a>
+      <a class="contact-card" href="https://www.facebook.com/natamon.kummongkol" target="_blank">
+        <img src="{{ url_for('static', filename='images/icon-facebook.png') }}"
+            class="contact-card-icon-img" alt="Facebook">
+        <div class="contact-card-label">Facebook</div>
+        <div class="contact-card-value">natamon.kummongkol</div>
+      </a>
+      <a class="contact-card" href="https://line.me/ti/p/DaFi39C-6y" target="_blank">
+        <img src="{{ url_for('static', filename='images/icon-line.png') }}"
+            class="contact-card-icon-img" alt="LINE">
+        <div class="contact-card-label">LINE</div>
+        <div class="contact-card-value">กดเพื่อเพิ่มเพื่อน</div>
+      </a>
+      <a class="contact-card" href="https://www.tiktok.com/@eingeing1010" target="_blank">
+        <img src="{{ url_for('static', filename='images/icon-tiktok.png') }}"
+            class="contact-card-icon-img" alt="TikTok">
+        <div class="contact-card-label">TikTok</div>
+        <div class="contact-card-value">@eingeing1010</div>
+      </a>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+// ===== SLIDESHOW =====
+const slides = document.querySelectorAll('.avatar .slide');
+let current = 0;
+
+setInterval(() => {
+  slides[current].classList.remove('active');
+  current = (current + 1) % slides.length;
+  slides[current].classList.add('active');
+}, 5000); // เปลี่ยนทุก 5 วินาที (แก้ตัวเลขได้)
+
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}EingEing — Songs{% endblock %}
+{% block content %}
+  <div class="section-label">เพลงของ EingEing</div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="songSearch" class="search-input" placeholder="ค้นหาชื่อเพลง หรือศิลปิน...">
+  </div>
+  <div class="filter-wrap">
+    <button class="filter-btn active" data-era="all">ทั้งหมด</button>
+    <button class="filter-btn" data-era="intl_old">🌍 สากล 80's–90's</button>
+    <button class="filter-btn" data-era="intl_new">🌍 สากล 2000's–ปัจจุบัน</button>
+    <button class="filter-btn" data-era="thai_old">🇹🇭 ไทย 80's–90's</button>
+    <button class="filter-btn" data-era="thai_new">🇹🇭 ไทย 2000's–ปัจจุบัน</button>
+  </div>
+  <div class="song-count" id="songCount"></div>
+  <div class="songs-list" id="songsList">
+    {% for s in songs %}
+    <div class="song-row" data-era="{{ s.era }}" data-title="{{ s.title }}" data-artist="{{ s.artist }}">
+      <div class="song-num">{{ loop.index }}</div>
+      <div class="song-info">
+        <div class="song-name">{{ s.title }}</div>
+        <div class="song-artist">{{ s.artist }}</div>
+      </div>
+      <div class="era-badge era-{{ s.era }}">
+        {% if s.era == 'intl_old' %}สากล 80's–90's
+        {% elif s.era == 'intl_new' %}สากล 2000's+
+        {% elif s.era == 'thai_old' %}ไทย 80's–90's
+        {% else %}ไทย 2000's+{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="no-result" id="noResult" style="display:none">ไม่พบเพลงที่ค้นหา 🎵</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/songs.js') }}"></script>
+{% endblock %}
