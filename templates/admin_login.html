@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin — EingEing</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'DM Sans',sans-serif;background:#FDF6F0;min-height:100vh;display:flex;align-items:center;justify-content:center}
-    .card{background:white;border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:360px;box-shadow:0 4px 24px rgba(74,63,85,0.08)}
-    h1{font-family:'DM Serif Display',serif;font-size:1.8rem;color:#4A3F55;margin-bottom:0.3rem}
+    body{font-family:'DM Sans',sans-serif;background:#FDF6F0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .card{background:white;border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:360px;box-shadow:0 4px 24px rgba(74,63,85,.08)}
+    h1{font-family:'DM Serif Display',serif;font-size:1.8rem;color:#4A3F55;margin-bottom:.3rem}
     h1 span{color:#F4A7C0;font-style:italic}
-    .sub{font-size:0.85rem;color:#9B8FA8;margin-bottom:1.8rem}
-    label{display:block;font-size:0.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#9B8FA8;margin-bottom:0.4rem}
-    input{width:100%;padding:0.75rem 1rem;border:1px solid rgba(74,63,85,0.12);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:#4A3F55;margin-bottom:1.2rem}
+    .sub{font-size:.85rem;color:#9B8FA8;margin-bottom:1.8rem}
+    label{display:block;font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#9B8FA8;margin-bottom:.4rem}
+    input{width:100%;padding:.75rem 1rem;border:1px solid rgba(74,63,85,.12);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:#4A3F55;margin-bottom:1.2rem}
     input:focus{outline:none;border-color:#F4A7C0}
-    button{width:100%;background:linear-gradient(135deg,#F4A7C0,#F9C4A8);color:white;border:none;padding:0.85rem;border-radius:40px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer}
-    .error{background:#FCE4EC;color:#C05070;border-radius:8px;padding:0.7rem 1rem;font-size:0.85rem;margin-bottom:1rem}
-    .back{text-align:center;margin-top:1rem;font-size:0.8rem;color:#9B8FA8}
+    button{width:100%;background:linear-gradient(135deg,#F4A7C0,#F9C4A8);color:white;border:none;padding:.85rem;border-radius:40px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer}
+    .error{background:#FCE4EC;color:#C05070;border-radius:8px;padding:.7rem 1rem;font-size:.85rem;margin-bottom:1rem}
+    .back{text-align:center;margin-top:1rem;font-size:.8rem;color:#9B8FA8}
     .back a{color:#F4A7C0;text-decoration:none}
   </style>
 </head>
 <body>
 <div class="card">
   <h1>Eing<span>Eing</span></h1>
-  <div class="sub">Admin Dashboard</div>
+  <div class="sub">Admin Panel</div>
   {% if error %}<div class="error">{{ error }}</div>{% endif %}
   <form method="POST">
     <label>รหัสผ่าน</label>

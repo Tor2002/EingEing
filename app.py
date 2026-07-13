@@ -31,7 +31,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated
 
-# PUBLIC
 @app.route("/")
 def home():
     return render_template("home.html", active="home", schedule=load("schedule"))
@@ -52,6 +51,10 @@ def song_request_page():
 def tip():
     return render_template("tip.html", account_name=ACCOUNT_NAME, promptpay_id=PROMPTPAY_ID, active="tip")
 
+@app.route("/tip/confirm")
+def tip_confirm():
+    return render_template("tip_confirm.html", promptpay_id=PROMPTPAY_ID)
+
 @app.route("/api/request", methods=["POST"])
 def api_request():
     d = request.get_json()
@@ -63,7 +66,6 @@ def api_request():
         "time":datetime.now().strftime("%d/%m/%Y %H:%M")})
     return jsonify({"ok":True})
 
-# ADMIN AUTH
 @app.route("/admin", methods=["GET","POST"])
 def admin_login():
     error = ""
@@ -79,7 +81,6 @@ def admin_logout():
     session.pop("admin", None)
     return redirect(url_for("admin_login"))
 
-# ADMIN DASHBOARD
 @app.route("/admin/dashboard")
 @login_required
 def admin_dashboard():
@@ -91,7 +92,6 @@ def admin_clear():
     song_requests.clear()
     return redirect(url_for("admin_dashboard"))
 
-# ADMIN SONGS
 @app.route("/admin/songs")
 @login_required
 def admin_songs():
@@ -125,7 +125,6 @@ def admin_songs_delete(sid):
     save("songs", [s for s in load("songs") if s["id"]!=sid])
     return redirect(url_for("admin_songs"))
 
-# ADMIN SCHEDULE
 @app.route("/admin/schedule")
 @login_required
 def admin_schedule():
@@ -145,7 +144,6 @@ def admin_schedule_save():
     save("schedule", schedule)
     return redirect(url_for("admin_schedule"))
 
-# ADMIN VIDEOS
 @app.route("/admin/videos")
 @login_required
 def admin_videos():

@@ -8,13 +8,13 @@
            alt="QR PromptPay"
            onerror="this.style.display='none'; document.getElementById('qrPlaceholder').style.display='flex';"
            style="width:100%;height:100%;object-fit:contain;border-radius:8px;">
-      <div id="qrPlaceholder" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;color:#9B8FA8;font-size:0.78rem;text-align:center;gap:8px">
-        <div style="font-size:2rem">📷</div><div>วาง qr.jpg<br>ใน static/images/</div>
+      <div id="qrPlaceholder" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;color:#9B8FA8;font-size:.72rem;text-align:center;gap:6px">
+        <div style="font-size:1.8rem">📷</div><div>วาง qr.jpg<br>ใน static/images/</div>
       </div>
     </div>
     <div class="tip-info">
       <h2>ขอบคุณ<br/>ทุกการให้กำลังใจ</h2>
-      <p>สแกน QR Code หรือเลือกจำนวนแล้วกด <strong>ให้ทิป</strong> เพื่อชำระผ่านโมบายแบงก์กิ้งได้เลยนะคะ</p>
+      <p>สแกน QR หรือเลือกจำนวนแล้วกด <strong>ให้ทิป</strong> ระบบจะแสดงรายละเอียดก่อนพาไปชำระค่ะ</p>
       <div class="tip-name">ชื่อบัญชี: <strong>{{ account_name }}</strong></div>
       <div class="tip-amounts">
         <div class="tip-amt" data-amount="20">฿20</div>
@@ -34,12 +34,11 @@
 {% endblock %}
 {% block scripts %}
 <script>
-const PROMPTPAY_ID = "{{ promptpay_id }}";
-const amtBtns = document.querySelectorAll('.tip-amt');
-const payBtn  = document.getElementById('tipPayBtn');
+const amtBtns    = document.querySelectorAll('.tip-amt');
+const payBtn     = document.getElementById('tipPayBtn');
 const customWrap = document.getElementById('customAmountWrap');
 const customInp  = document.getElementById('customAmount');
-let selectedAmt = null;
+let selectedAmt  = null;
 
 function updatePayBtn() {
   const amt = selectedAmt === 'custom' ? parseInt(customInp.value) : selectedAmt;
@@ -65,10 +64,11 @@ amtBtns.forEach(btn => {
 
 customInp.addEventListener('input', updatePayBtn);
 
+// ไปหน้า confirm แทนเปิด promptpay ตรงๆ
 payBtn.addEventListener('click', () => {
   const amt = selectedAmt === 'custom' ? parseInt(customInp.value) : selectedAmt;
   if (!amt || amt <= 0) return;
-  window.open(`https://promptpay.io/${PROMPTPAY_ID}/${amt}`, '_blank');
+  window.location.href = `/tip/confirm?amount=${amt}`;
 });
 </script>
 {% endblock %}

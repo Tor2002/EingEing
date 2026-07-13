@@ -1,31 +1,22 @@
 {% extends "base.html" %}
 {% block title %}EingEing — Videos{% endblock %}
 {% block content %}
-  <div class="section-label">คลิปการแสดง</div>
-
+  <div class="section-label">Cover By EingEing</div>
   <div class="video-grid">
     {% for v in videos %}
     <a class="video-card" href="{{ v.url }}" target="_blank">
-
-      <!-- Thumbnail -->
       <div class="video-thumb">
-        <img
-          src="{{ url_for('static', filename='images/' + v.thumb) }}"
-          alt="{{ v.title }}"
-          class="video-thumb-img"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <!-- Gradient fallback ถ้ายังไม่มีรูป -->
+        <img src="{{ url_for('static', filename='images/' + v.thumb) }}"
+             alt="{{ v.title }}" class="video-thumb-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
         <div class="video-thumb-fallback" style="background:{{ v.color }}">
-          <span class="fallback-note">วางรูปปกที่<br>static/images/{{ v.thumb }}</span>
+          <span style="font-size:2rem;opacity:.4">🎵</span>
         </div>
-        <!-- Play button overlay -->
         <div class="play-overlay">
           <div class="play-circle">▶</div>
           <div class="play-label">เปิดใน TikTok</div>
         </div>
       </div>
-
-      <!-- Info -->
       <div class="video-info">
         <div class="title">{{ v.title }}</div>
         <div class="video-meta-row">
@@ -33,8 +24,6 @@
           {% if v.date %}<span class="video-date">{{ v.date }}</span>{% endif %}
         </div>
       </div>
-
     </a>
     {% endfor %}
-  </div>
 {% endblock %}

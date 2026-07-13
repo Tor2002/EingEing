@@ -10,32 +10,29 @@
 </head>
 <body>
 <div class="site">
-
   <nav>
     <a class="nav-logo" href="/">Eing<span>Eing</span></a>
     <div class="nav-tabs">
-      <a class="tab-btn {% if active=='home'    %}active{% endif %}" href="/">
+      <a class="tab-btn {% if active=='home' %}active{% endif %}" href="/">
         <span class="tab-icon">🏠</span><span class="tab-text">Home</span>
       </a>
-      <a class="tab-btn {% if active=='videos'  %}active{% endif %}" href="/videos">
+      <a class="tab-btn {% if active=='videos' %}active{% endif %}" href="/videos">
         <span class="tab-icon">🎬</span><span class="tab-text">Videos</span>
       </a>
-      <a class="tab-btn {% if active=='songs'   %}active{% endif %}" href="/songs">
+      <a class="tab-btn {% if active=='songs' %}active{% endif %}" href="/songs">
         <span class="tab-icon">🎵</span><span class="tab-text">Songs</span>
       </a>
       <a class="tab-btn {% if active=='request' %}active{% endif %}" href="/request">
         <span class="tab-icon">✉️</span><span class="tab-text">Request</span>
       </a>
-      <a class="tab-btn {% if active=='tip'     %}active{% endif %}" href="/tip">
+      <a class="tab-btn {% if active=='tip' %}active{% endif %}" href="/tip">
         <span class="tab-icon">💝</span><span class="tab-text">Tip</span>
       </a>
     </div>
   </nav>
-
   <div class="page active">
     {% block content %}{% endblock %}
   </div>
-
 </div>
 {% block scripts %}{% endblock %}
 </body>

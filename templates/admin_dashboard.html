@@ -6,95 +6,59 @@
   .stat-box{padding:1.1rem 1rem;margin-bottom:0;text-align:center}
   .stat-num{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--ink)}
   .stat-label{font-size:.68rem;color:var(--muted);margin-top:3px}
-
   .req-card{background:white;border-radius:12px;border:1px solid var(--border);padding:.9rem 1rem}
   .req-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-  .req-name{font-weight:600;font-size:.9rem;color:var(--ink)}
+  .req-name{font-weight:600;font-size:.9rem}
   .req-time{font-size:.66rem;color:var(--muted);white-space:nowrap}
-  .req-song-row{display:flex;align-items:baseline;gap:.4rem;flex-wrap:wrap;margin-bottom:.3rem}
-  .req-song{font-size:.86rem;color:var(--ink)}
-  .req-artist{font-size:.74rem;color:var(--muted)}
+  .req-song{font-size:.86rem}.req-artist{font-size:.74rem;color:var(--muted)}
   .req-msg{font-size:.78rem;color:var(--muted);background:#FDF6F0;border-radius:8px;padding:.5rem .6rem;margin-top:.4rem;line-height:1.5}
-  .req-tip-badge{background:#E0F7F0;color:#2D7A5A;font-size:.68rem;font-weight:600;padding:.2rem .6rem;border-radius:40px;white-space:nowrap}
-
-  @media(max-width:700px){
-    .stats-row{grid-template-columns:repeat(3,1fr);gap:.5rem}
-    .stat-box{padding:.85rem .5rem}
-    .stat-num{font-size:1.4rem}
-    .stat-label{font-size:.6rem}
-  }
+  .tip-badge{background:#E0F7F0;color:#2D7A5A;font-size:.68rem;font-weight:600;padding:.2rem .6rem;border-radius:40px;white-space:nowrap}
+  @media(max-width:700px){.stats-row{gap:.5rem}.stat-box{padding:.85rem .5rem}.stat-num{font-size:1.4rem}.stat-label{font-size:.6rem}}
 </style>
 {% endblock %}
 {% block content %}
   <div class="page-title">Eing<span>Eing</span> — Requests</div>
-
-  <!-- Stats -->
   <div class="stats-row">
     {% set total = namespace(v=0) %}
     {% for r in requests %}{% if r.tip and r.tip.isdigit() %}{% set total.v = total.v + r.tip|int %}{% endif %}{% endfor %}
-    <div class="card stat-box">
-      <div class="stat-num">{{ requests|length }}</div>
-      <div class="stat-label">คำขอทั้งหมด</div>
-    </div>
-    <div class="card stat-box">
-      {% set tips = requests | selectattr('tip') | list %}
-      <div class="stat-num">{{ tips|length }}</div>
-      <div class="stat-label">มีทิป</div>
-    </div>
-    <div class="card stat-box">
-      <div class="stat-num" style="color:#2D7A5A">฿{{ total.v }}</div>
-      <div class="stat-label">ทิปรวม</div>
-    </div>
+    <div class="card stat-box"><div class="stat-num">{{ requests|length }}</div><div class="stat-label">คำขอทั้งหมด</div></div>
+    <div class="card stat-box">{% set tips = requests|selectattr('tip')|list %}<div class="stat-num">{{ tips|length }}</div><div class="stat-label">มีทิป</div></div>
+    <div class="card stat-box"><div class="stat-num" style="color:#2D7A5A">฿{{ total.v }}</div><div class="stat-label">ทิปรวม</div></div>
   </div>
-
   {% if requests %}
   <div style="display:flex;justify-content:flex-end;margin-bottom:.8rem">
     <form method="POST" action="/admin/clear" onsubmit="return confirm('ลบรายการทั้งหมด?')">
       <button type="submit" class="btn btn-red btn-sm">🗑 ล้างรายการ</button>
     </form>
   </div>
-
-  <!-- DESKTOP table -->
   <table class="desktop-table">
-    <thead>
-      <tr><th>#</th><th>ชื่อ</th><th>เพลงที่ขอ</th><th>ศิลปิน</th><th>ทิป</th><th>ข้อความ</th><th>เวลา</th></tr>
-    </thead>
+    <thead><tr><th>#</th><th>ชื่อ</th><th>เพลงที่ขอ</th><th>ศิลปิน</th><th>ทิป</th><th>ข้อความ</th><th>เวลา</th></tr></thead>
     <tbody>
-      {% for r in requests | reverse %}
+      {% for r in requests|reverse %}
       <tr>
         <td style="color:var(--muted);font-size:.75rem">{{ loop.index }}</td>
-        <td><strong>{{ r.name }}</strong></td>
-        <td>{{ r.song }}</td>
+        <td><strong>{{ r.name }}</strong></td><td>{{ r.song }}</td>
         <td style="color:var(--muted)">{{ r.artist or '—' }}</td>
-        <td>
-          {% if r.tip %}<span class="req-tip-badge">฿{{ r.tip }}</span>
-          {% else %}<span style="color:var(--muted)">—</span>{% endif %}
-        </td>
-        <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.message or '—' }}</td>
+        <td>{% if r.tip %}<span class="tip-badge">฿{{ r.tip }}</span>{% else %}<span style="color:var(--muted)">—</span>{% endif %}</td>
+        <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.message or '—' }}</td>
         <td style="font-size:.72rem;color:var(--muted);white-space:nowrap">{{ r.time }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-
-  <!-- MOBILE cards -->
   <div class="mobile-cards">
-    {% for r in requests | reverse %}
+    {% for r in requests|reverse %}
     <div class="req-card">
-      <div class="req-card-top">
-        <div class="req-name">{{ r.name }}</div>
-        <div class="req-time">{{ r.time }}</div>
-      </div>
-      <div class="req-song-row">
+      <div class="req-card-top"><div class="req-name">{{ r.name }}</div><div class="req-time">{{ r.time }}</div></div>
+      <div style="display:flex;align-items:baseline;gap:.4rem;flex-wrap:wrap;margin-bottom:.3rem">
         <span class="req-song">🎵 {{ r.song }}</span>
         {% if r.artist %}<span class="req-artist">— {{ r.artist }}</span>{% endif %}
       </div>
-      {% if r.tip %}<span class="req-tip-badge">💰 ทิป ฿{{ r.tip }}</span>{% endif %}
+      {% if r.tip %}<span class="tip-badge">💰 ฿{{ r.tip }}</span>{% endif %}
       {% if r.message %}<div class="req-msg">"{{ r.message }}"</div>{% endif %}
     </div>
     {% endfor %}
   </div>
-
   {% else %}
   <div class="card" style="text-align:center;padding:3rem;color:var(--muted)">ยังไม่มีคำขอเพลง 🎵</div>
   {% endif %}

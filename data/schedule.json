@@ -35,9 +35,9 @@
   ],
   "wed": [
     {
-      "venue": "WhiteHouse",
+      "venue": "Free",
       "time": "19.30-20.30",
-      "status": "booked"
+      "status": "free"
     },
     {
       "venue": "Fomo",
@@ -62,9 +62,9 @@
       "status": "booked"
     },
     {
-      "venue": "WhiteHouse",
+      "venue": "Free",
       "time": "22.30-00.00",
-      "status": "booked"
+      "status": "free"
     }
   ],
   "fri": [
@@ -87,17 +87,7 @@
   "sat": [
     {
       "venue": "Free",
-      "time": "19.30-20.30",
-      "status": "free"
-    },
-    {
-      "venue": "SaveZone",
-      "time": "22.50-23.50",
-      "status": "booked"
-    },
-    {
-      "venue": "Free",
-      "time": "22.30-00.00",
+      "time": "ทั้งวัน",
       "status": "free"
     }
   ],

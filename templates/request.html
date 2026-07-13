@@ -4,9 +4,9 @@
   <div class="request-wrap">
     <h2>ขอเพลง</h2>
     <p>อยากได้เพลงไหน? ส่งรายชื่อเพลงมาได้เลย EingEing จะพยายามเล่นให้นะคะ 🎵</p>
-    <div class="form-group"><label>ชื่อของคุณ</label><input type="text" id="reqName" placeholder="เช่น น้องอิง"></div>
-    <div class="form-group"><label>ชื่อเพลงที่ต้องการ</label><input type="text" id="reqSong" placeholder="เช่น Stay With Me, Perfect"></div>
-    <div class="form-group"><label>ศิลปิน / เจ้าของเพลง</label><input type="text" id="reqArtist" placeholder="เช่น Ed Sheeran"></div>
+    <div class="form-group"><label>ชื่อของคุณ</label><input type="text" id="reqName" placeholder="เช่น น้องนิ่ม"></div>
+    <div class="form-group"><label>ชื่อเพลงที่ต้องการ</label><input type="text" id="reqSong" placeholder="เช่น ลมหายใจ, เธอ, ฝัน..."></div>
+    <div class="form-group"><label>ศิลปิน / เจ้าของเพลง</label><input type="text" id="reqArtist" placeholder="เช่น Palmy, EingEing..."></div>
     <div class="form-group"><label>ทิปที่ให้ (ไม่บังคับ)</label><input type="text" id="reqTip" placeholder="เช่น 50, 100..."></div>
     <div class="form-group"><label>ข้อความถึง EingEing (ไม่บังคับ)</label><textarea id="reqMsg" placeholder="สวัสดีค่ะ อยากให้ร้องเพลง..."></textarea></div>
     <button class="submit-btn" id="submitBtn">ส่งคำขอเพลง →</button>
@@ -14,5 +14,39 @@
   </div>
 {% endblock %}
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/request.js') }}"></script>
+<script>
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const name    = document.getElementById('reqName').value.trim();
+  const song    = document.getElementById('reqSong').value.trim();
+  const artist  = document.getElementById('reqArtist').value.trim();
+  const tip     = document.getElementById('reqTip').value.trim();
+  const message = document.getElementById('reqMsg').value.trim();
+  const successEl = document.getElementById('successMsg');
+  successEl.classList.remove('show');
+
+  if (!name || !song) {
+    successEl.textContent = '⚠️ กรุณากรอกชื่อและชื่อเพลงก่อนนะคะ';
+    successEl.style.cssText = 'background:#FFF3E0;color:#C07030';
+    successEl.classList.add('show');
+    return;
+  }
+  const res = await fetch('/api/request', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({name, song, artist, tip, message})
+  });
+  const data = await res.json();
+  if (data.ok) {
+    successEl.textContent = '✓ ส่งคำขอเรียบร้อยแล้ว! EingEing จะพยายามเล่นให้นะคะ ♡';
+    successEl.style.cssText = 'background:#FCE4EC;color:#C05070';
+    successEl.classList.add('show');
+    ['reqName','reqSong','reqArtist','reqTip','reqMsg'].forEach(id => document.getElementById(id).value = '');
+    setTimeout(() => successEl.classList.remove('show'), 5000);
+  } else {
+    successEl.textContent = '⚠️ ' + (data.error || 'เกิดข้อผิดพลาด');
+    successEl.style.cssText = 'background:#FFF3E0;color:#C07030';
+    successEl.classList.add('show');
+  }
+});
+</script>
 {% endblock %}

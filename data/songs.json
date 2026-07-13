@@ -1,20 +1,20 @@
 [
-  {
-    "id": 1,
-    "title": "Careless Whisper",
-    "artist": "George Michael",
-    "era": "intl_old"
-  },
-  {
-    "id": 8,
-    "title": "Stay With Me",
-    "artist": "Sam Smith",
-    "era": "intl_new"
-  },
-  {
-    "id": 9,
-    "title": "Perfect",
-    "artist": "Ed Sheeran",
-    "era": "intl_new"
-  }
+  {"id":1,"title":"Careless Whisper","artist":"George Michael","era":"intl_old"},
+  {"id":2,"title":"Every Breath You Take","artist":"The Police","era":"intl_old"},
+  {"id":3,"title":"Nothing's Gonna Stop Us","artist":"Starship","era":"intl_old"},
+  {"id":4,"title":"Take My Breath Away","artist":"Berlin","era":"intl_old"},
+  {"id":5,"title":"Total Eclipse of Heart","artist":"Bonnie Tyler","era":"intl_old"},
+  {"id":6,"title":"Shallow","artist":"Lady Gaga","era":"intl_new"},
+  {"id":7,"title":"Someone Like You","artist":"Adele","era":"intl_new"},
+  {"id":8,"title":"Stay With Me","artist":"Sam Smith","era":"intl_new"},
+  {"id":9,"title":"Perfect","artist":"Ed Sheeran","era":"intl_new"},
+  {"id":10,"title":"Blinding Lights","artist":"The Weeknd","era":"intl_new"},
+  {"id":11,"title":"ในฝัน","artist":"ธงไชย","era":"thai_old"},
+  {"id":12,"title":"ขอบคุณที่รักกัน","artist":"อัสนี & วสันต์","era":"thai_old"},
+  {"id":13,"title":"ยังรักอยู่","artist":"โมเดิร์นด็อก","era":"thai_old"},
+  {"id":14,"title":"ลมหายใจ","artist":"EingEing","era":"thai_new"},
+  {"id":15,"title":"รัก","artist":"EingEing","era":"thai_new"},
+  {"id":16,"title":"ฝัน","artist":"EingEing","era":"thai_new"},
+  {"id":17,"title":"เธอ","artist":"Palmy","era":"thai_new"},
+  {"id":18,"title":"ให้เธอรู้","artist":"Slot Machine","era":"thai_new"}
 ]

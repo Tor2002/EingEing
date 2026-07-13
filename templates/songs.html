@@ -9,9 +9,9 @@
   <div class="filter-wrap">
     <button class="filter-btn active" data-era="all">ทั้งหมด</button>
     <button class="filter-btn" data-era="intl_old">🌍 สากล 80's–90's</button>
-    <button class="filter-btn" data-era="intl_new">🌍 สากล 2000's–ปัจจุบัน</button>
+    <button class="filter-btn" data-era="intl_new">🌍 สากล 2000's+</button>
     <button class="filter-btn" data-era="thai_old">🇹🇭 ไทย 80's–90's</button>
-    <button class="filter-btn" data-era="thai_new">🇹🇭 ไทย 2000's–ปัจจุบัน</button>
+    <button class="filter-btn" data-era="thai_new">🇹🇭 ไทย 2000's+</button>
   </div>
   <div class="song-count" id="songCount"></div>
   <div class="songs-list" id="songsList">
@@ -22,17 +22,123 @@
         <div class="song-name">{{ s.title }}</div>
         <div class="song-artist">{{ s.artist }}</div>
       </div>
-      <div class="era-badge era-{{ s.era }}">
-        {% if s.era == 'intl_old' %}สากล 80's–90's
-        {% elif s.era == 'intl_new' %}สากล 2000's+
-        {% elif s.era == 'thai_old' %}ไทย 80's–90's
-        {% else %}ไทย 2000's+{% endif %}
+      <div class="song-right">
+        <span class="era-badge era-{{ s.era }}">
+          {% if s.era=='intl_old' %}สากล 80's
+          {% elif s.era=='intl_new' %}สากล 2000's+
+          {% elif s.era=='thai_old' %}ไทย 80's
+          {% else %}ไทย 2000's+{% endif %}
+        </span>
+        <button class="req-btn" data-title="{{ s.title }}" data-artist="{{ s.artist }}">ขอเพลง</button>
       </div>
     </div>
     {% endfor %}
   </div>
   <div class="no-result" id="noResult" style="display:none">ไม่พบเพลงที่ค้นหา 🎵</div>
+
+  <!-- Quick request modal -->
+  <div class="req-modal-bg" id="reqModal">
+    <div class="req-modal">
+      <button class="req-modal-close" id="reqModalClose">✕</button>
+      <h3>ขอเพลง</h3>
+      <p class="req-modal-song" id="reqModalSong"></p>
+      <div class="form-group"><label>ชื่อของคุณ</label><input type="text" id="mqName" placeholder="เช่น น้องนิ่ม"></div>
+      <div class="form-group"><label>ทิปที่ให้ (ไม่บังคับ)</label><input type="text" id="mqTip" placeholder="เช่น 50, 100"></div>
+      <div class="form-group"><label>ข้อความ (ไม่บังคับ)</label><textarea id="mqMsg" placeholder="ฝากบอกอะไรก็ได้..." style="min-height:60px"></textarea></div>
+      <button class="submit-btn" id="mqSubmit">ส่งคำขอ →</button>
+      <div class="success-msg" id="mqSuccess"></div>
+    </div>
+  </div>
 {% endblock %}
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/songs.js') }}"></script>
+<script>
+// Search & Filter
+const searchInput = document.getElementById('songSearch');
+const filterBtns  = document.querySelectorAll('.filter-btn');
+const songRows    = document.querySelectorAll('.song-row');
+const songCount   = document.getElementById('songCount');
+const noResult    = document.getElementById('noResult');
+let currentEra = 'all';
+
+function updateSongs() {
+  const q = searchInput.value.trim().toLowerCase();
+  let visible = 0, idx = 1;
+  songRows.forEach(row => {
+    const title  = (row.dataset.title  || '').toLowerCase();
+    const artist = (row.dataset.artist || '').toLowerCase();
+    const matchEra    = currentEra === 'all' || row.dataset.era === currentEra;
+    const matchSearch = !q || title.includes(q) || artist.includes(q);
+    if (matchEra && matchSearch) {
+      row.classList.remove('hidden');
+      row.querySelector('.song-num').textContent = idx++;
+      visible++;
+    } else {
+      row.classList.add('hidden');
+    }
+  });
+  songCount.textContent = `แสดง ${visible} เพลง`;
+  noResult.style.display = visible === 0 ? 'block' : 'none';
+}
+
+searchInput.addEventListener('input', updateSongs);
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentEra = btn.dataset.era;
+    searchInput.value = '';
+    updateSongs();
+  });
+});
+updateSongs();
+
+// Quick Request Modal
+const modal      = document.getElementById('reqModal');
+const modalClose = document.getElementById('reqModalClose');
+const modalSong  = document.getElementById('reqModalSong');
+const mqSubmit   = document.getElementById('mqSubmit');
+let mSong = '', mArtist = '';
+
+document.querySelectorAll('.req-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    mSong   = btn.dataset.title;
+    mArtist = btn.dataset.artist;
+    modalSong.textContent = `🎵 ${mSong} — ${mArtist}`;
+    modal.classList.add('open');
+    document.getElementById('mqName').focus();
+  });
+});
+
+modalClose.addEventListener('click', () => modal.classList.remove('open'));
+modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+
+mqSubmit.addEventListener('click', async () => {
+  const name    = document.getElementById('mqName').value.trim();
+  const tip     = document.getElementById('mqTip').value.trim();
+  const message = document.getElementById('mqMsg').value.trim();
+  const successEl = document.getElementById('mqSuccess');
+  successEl.classList.remove('show');
+
+  if (!name) {
+    successEl.textContent = '⚠️ กรุณากรอกชื่อก่อนนะคะ';
+    successEl.style.cssText = 'background:#FFF3E0;color:#C07030';
+    successEl.classList.add('show');
+    return;
+  }
+  const res  = await fetch('/api/request', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({name, song: mSong, artist: mArtist, tip, message})
+  });
+  const data = await res.json();
+  if (data.ok) {
+    successEl.textContent = '✓ ส่งคำขอแล้ว! EingEing จะพยายามเล่นให้นะคะ ♡';
+    successEl.style.cssText = 'background:#FCE4EC;color:#C05070';
+    successEl.classList.add('show');
+    ['mqName','mqTip','mqMsg'].forEach(id => document.getElementById(id).value = '');
+    setTimeout(() => { modal.classList.remove('open'); successEl.classList.remove('show'); }, 2500);
+  }
+});
+</script>
 {% endblock %}

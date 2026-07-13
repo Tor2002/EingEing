@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ให้ทิป EingEing</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--pink:#F4A7C0;--peach:#F9C4A8;--lavender:#C9BCEF;--ink:#4A3F55;--muted:#9B8FA8;--bg:#FDF6F0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+
+    .card{
+      background:white;border-radius:24px;
+      box-shadow:0 8px 40px rgba(74,63,85,0.12);
+      max-width:400px;width:100%;overflow:hidden;
+    }
+
+    /* Top gradient header */
+    .card-header{
+      background:linear-gradient(135deg,var(--pink),var(--peach));
+      padding:2rem 2rem 2.5rem;
+      text-align:center;position:relative;
+    }
+    .card-header .emoji{font-size:2.8rem;margin-bottom:.6rem;display:block}
+    .card-header h1{font-family:'DM Serif Display',serif;color:white;font-size:1.5rem;font-weight:400;line-height:1.2}
+    .card-header p{color:rgba(255,255,255,.85);font-size:.82rem;margin-top:.3rem}
+
+    /* Amount badge — overlaps header and body */
+    .amount-badge{
+      background:white;border-radius:20px;
+      box-shadow:0 4px 20px rgba(74,63,85,0.15);
+      padding:1.1rem 2rem;
+      margin:-1.4rem 1.5rem 0;
+      display:flex;align-items:center;justify-content:center;gap:.6rem;
+      position:relative;z-index:2;
+    }
+    .amount-badge .label{font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .amount-badge .amount{font-family:'DM Serif Display',serif;font-size:2.4rem;color:var(--ink);line-height:1}
+    .amount-badge .currency{font-size:.95rem;color:var(--muted);align-self:flex-end;padding-bottom:.3rem}
+
+    /* Body */
+    .card-body{padding:1.8rem 1.8rem 2rem}
+
+    .info-rows{display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.5rem}
+    .info-row{display:flex;justify-content:space-between;align-items:center;padding:.6rem .9rem;background:#FDF6F0;border-radius:10px}
+    .info-row-label{font-size:.75rem;color:var(--muted)}
+    .info-row-value{font-size:.85rem;font-weight:500;color:var(--ink)}
+    .info-row-value.highlight{color:var(--pink)}
+
+    .pay-btn{
+      width:100%;
+      background:linear-gradient(135deg,var(--pink),var(--peach));
+      color:white;border:none;
+      padding:1rem;border-radius:14px;
+      font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;
+      cursor:pointer;transition:opacity .2s;
+      display:flex;align-items:center;justify-content:center;gap:.5rem;
+      text-decoration:none;
+      margin-bottom:.75rem;
+    }
+    .pay-btn:hover{opacity:.88}
+
+    .back-btn{
+      width:100%;background:rgba(74,63,85,.07);color:var(--ink);
+      border:none;padding:.8rem;border-radius:14px;
+      font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;
+      cursor:pointer;transition:background .2s;text-decoration:none;
+      display:block;text-align:center;
+    }
+    .back-btn:hover{background:rgba(74,63,85,.12)}
+
+    .note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:1rem;line-height:1.6}
+
+    @media(max-width:440px){
+      .card-header{padding:1.6rem 1.5rem 2.2rem}
+      .card-body{padding:1.5rem 1.3rem 1.6rem}
+      .amount-badge{margin:-1.2rem 1.1rem 0;padding:.9rem 1.4rem}
+      .amount-badge .amount{font-size:2rem}
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <span class="emoji">💝</span>
+    <h1>ให้กำลังใจ EingEing</h1>
+    <p>ขอบคุณที่สนับสนุนนะคะ ♡</p>
+  </div>
+
+  <div class="amount-badge">
+    <div>
+      <div class="label">จำนวนทิป</div>
+      <div style="display:flex;align-items:baseline;gap:.3rem">
+        <span class="currency">฿</span>
+        <span class="amount" id="displayAmount">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="info-rows">
+      <div class="info-row">
+        <span class="info-row-label">ชื่อบัญชีผู้รับ</span>
+        <span class="info-row-value">ณฐมน</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row-label">ช่องทางชำระ</span>
+        <span class="info-row-value highlight">PromptPay</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row-label">จำนวนเงิน</span>
+        <span class="info-row-value highlight" id="displayAmount2">฿0</span>
+      </div>
+    </div>
+
+    <a id="payLink" href="#" class="pay-btn">
+      <span>💳</span> เปิดแอปธนาคารเพื่อชำระ
+    </a>
+    <a href="/tip" class="back-btn">← กลับเลือกจำนวนใหม่</a>
+
+    <div class="note">
+      กดปุ่มด้านบนเพื่อเปิดแอปธนาคาร<br>
+      ระบบจะพาไปยังหน้าชำระเงิน PromptPay โดยตรง
+    </div>
+  </div>
+</div>
+
+<script>
+  // อ่าน amount จาก URL ?amount=XXX
+  const params = new URLSearchParams(window.location.search);
+  const amount = parseInt(params.get('amount')) || 0;
+  const promptpayId = '{{ promptpay_id }}';
+
+  if (amount > 0) {
+    document.getElementById('displayAmount').textContent = amount.toLocaleString();
+    document.getElementById('displayAmount2').textContent = '฿' + amount.toLocaleString();
+    document.getElementById('payLink').href = `https://promptpay.io/${promptpayId}/${amount}`;
+  } else {
+    // ถ้าไม่มี amount ส่งกลับหน้า tip
+    window.location.href = '/tip';
+  }
+</script>
+</body>
+</html>

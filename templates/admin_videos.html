@@ -5,24 +5,21 @@
   .add-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
   .fg-full{grid-column:1/-1}
   .video-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:1rem}
-  .vcard{background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden;transition:box-shadow .2s}
-  .vcard:hover{box-shadow:0 4px 16px rgba(74,63,85,0.1)}
+  .vcard{background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden}
   .vthumb{aspect-ratio:16/9;position:relative;overflow:hidden;background:#eee}
   .vthumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
   .vcard:hover .vthumb img{transform:scale(1.03)}
   .vthumb-fb{width:100%;height:100%;display:none;align-items:center;justify-content:center;font-size:2.5rem;opacity:.35}
-  .play-ov{position:absolute;inset:0;background:rgba(74,63,85,.18);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:white;opacity:.8}
+  .play-ov{position:absolute;inset:0;background:rgba(74,63,85,.18);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:white}
   .vbody{padding:.9rem 1rem}
-  .vtitle{font-weight:500;font-size:.88rem;margin-bottom:.2rem;color:var(--ink)}
+  .vtitle{font-weight:500;font-size:.88rem;margin-bottom:.2rem}
   .vmeta{font-size:.72rem;color:var(--muted);margin-bottom:.75rem}
   .vactions{display:flex;gap:.4rem;flex-wrap:wrap}
-  /* edit panel */
   .edit-panel{display:none;border-top:1px solid var(--border);padding:1rem;background:#FDF6F0}
   .edit-panel.open{display:block}
   .edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
-  .thumb-row{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:.3rem}
   .thumb-preview{width:70px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
-  /* mobile */
+  .thumb-row{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:.3rem}
   @media(max-width:700px){
     .video-list{grid-template-columns:1fr}
     .add-grid,.edit-grid{grid-template-columns:1fr}
@@ -35,41 +32,20 @@
 {% endblock %}
 {% block content %}
   <div class="page-title">จัดการ<span> Videos</span></div>
-
-  <!-- Add video -->
   <div class="card">
     <h2>➕ เพิ่มคลิปใหม่</h2>
     <form method="POST" action="/admin/videos/add" enctype="multipart/form-data">
       <div class="add-grid">
-        <div class="fg">
-          <label>ชื่อคลิป *</label>
-          <input name="title" required placeholder="เช่น EingEing Live at Bloom">
-        </div>
-        <div class="fg">
-          <label>สถานที่ / งาน</label>
-          <input name="venue" placeholder="เช่น Bloom Rooftop Bar">
-        </div>
-        <div class="fg">
-          <label>วันที่</label>
-          <input name="date" placeholder="เช่น มิถุนายน 2567">
-        </div>
-        <div class="fg">
-          <label>ลิงก์ TikTok / YouTube *</label>
-          <input name="url" type="url" required placeholder="https://...">
-        </div>
-        <div class="fg fg-full">
-          <label>รูปปก (อัปโหลดไฟล์)</label>
-          <input type="file" name="thumb_file" accept="image/*" id="addThumbInput" onchange="previewThumb(this,'addPreview')">
-          <img id="addPreview" style="display:none;width:120px;height:80px;object-fit:cover;border-radius:8px;margin-top:.4rem;border:1px solid var(--border)">
-        </div>
+        <div class="fg"><label>ชื่อคลิป *</label><input name="title" required placeholder="เช่น EingEing Live at Bloom"></div>
+        <div class="fg"><label>สถานที่ / งาน</label><input name="venue" placeholder="เช่น Bloom Rooftop Bar"></div>
+        <div class="fg"><label>วันที่</label><input name="date" placeholder="เช่น มิถุนายน 2567"></div>
+        <div class="fg"><label>ลิงก์ TikTok / YouTube *</label><input name="url" type="url" required placeholder="https://..."></div>
+        <div class="fg fg-full"><label>รูปปก</label><input type="file" name="thumb_file" accept="image/*" onchange="previewThumb(this,'addPrev')">
+        <img id="addPrev" style="display:none;width:120px;height:80px;object-fit:cover;border-radius:8px;margin-top:.4rem;border:1px solid var(--border)"></div>
       </div>
-      <div style="margin-top:1rem">
-        <button type="submit" class="btn btn-pink">+ เพิ่มคลิป</button>
-      </div>
+      <div style="margin-top:1rem"><button type="submit" class="btn btn-pink">+ เพิ่มคลิป</button></div>
     </form>
   </div>
-
-  <!-- Video grid -->
   {% if videos %}
   <div class="video-list">
     {% for v in videos %}
@@ -82,48 +58,27 @@
       </div>
       <div class="vbody">
         <div class="vtitle">{{ v.title }}</div>
-        <div class="vmeta">
-          {% if v.venue %}{{ v.venue }}{% endif %}
-          {% if v.date %} · {{ v.date }}{% endif %}
-        </div>
+        <div class="vmeta">{% if v.venue %}{{ v.venue }}{% endif %}{% if v.date %} · {{ v.date }}{% endif %}</div>
         <div class="vactions">
           <button type="button" class="btn btn-out btn-sm" onclick="toggleEditV({{ v.id }})">✏️ แก้ไข</button>
-          <form method="POST" action="/admin/videos/delete/{{ v.id }}"
-                onsubmit="return confirm('ลบคลิป {{ v.title }}?')" style="display:inline">
+          <form method="POST" action="/admin/videos/delete/{{ v.id }}" onsubmit="return confirm('ลบ {{ v.title }}?')" style="display:inline">
             <button type="submit" class="btn btn-red btn-sm">🗑 ลบ</button>
           </form>
           <a href="{{ v.url }}" target="_blank" class="btn btn-out btn-sm">↗</a>
         </div>
       </div>
-
-      <!-- Edit panel -->
       <div class="edit-panel" id="editv-{{ v.id }}">
         <form method="POST" action="/admin/videos/edit/{{ v.id }}" enctype="multipart/form-data">
           <div class="edit-grid">
-            <div class="fg">
-              <label>ชื่อคลิป *</label>
-              <input name="title" value="{{ v.title }}" required>
-            </div>
-            <div class="fg">
-              <label>สถานที่</label>
-              <input name="venue" value="{{ v.venue }}">
-            </div>
-            <div class="fg">
-              <label>วันที่</label>
-              <input name="date" value="{{ v.date }}">
-            </div>
-            <div class="fg">
-              <label>ลิงก์</label>
-              <input name="url" type="url" value="{{ v.url }}">
-            </div>
+            <div class="fg"><label>ชื่อคลิป *</label><input name="title" value="{{ v.title }}" required></div>
+            <div class="fg"><label>สถานที่</label><input name="venue" value="{{ v.venue }}"></div>
+            <div class="fg"><label>วันที่</label><input name="date" value="{{ v.date }}"></div>
+            <div class="fg"><label>ลิงก์</label><input name="url" type="url" value="{{ v.url }}"></div>
             <div class="fg fg-full">
               <label>เปลี่ยนรูปปก</label>
               <div class="thumb-row">
-                <img src="/static/images/{{ v.thumb }}" class="thumb-preview"
-                     id="prev-{{ v.id }}"
-                     onerror="this.style.display='none'">
-                <input type="file" name="thumb_file" accept="image/*"
-                       onchange="previewThumb(this,'prev-{{ v.id }}')">
+                <img src="/static/images/{{ v.thumb }}" class="thumb-preview" id="prev-{{ v.id }}" onerror="this.style.display='none'">
+                <input type="file" name="thumb_file" accept="image/*" onchange="previewThumb(this,'prev-{{ v.id }}')">
               </div>
             </div>
           </div>
@@ -137,39 +92,24 @@
     {% endfor %}
   </div>
   {% else %}
-  <div style="text-align:center;padding:3rem;color:var(--muted);background:white;border-radius:12px;border:1px solid var(--border)">
-    ยังไม่มีคลิป กดเพิ่มด้านบนได้เลยค่ะ 🎬
-  </div>
+  <div class="card" style="text-align:center;padding:3rem;color:var(--muted)">ยังไม่มีคลิป 🎬</div>
   {% endif %}
 {% endblock %}
 {% block scripts %}
 <script>
-function toggleEditV(id) {
-  const panel = document.getElementById('editv-' + id);
-  const isOpen = panel.classList.contains('open');
-  // ปิดทั้งหมดก่อน
-  document.querySelectorAll('.edit-panel.open').forEach(p => p.classList.remove('open'));
-  if (!isOpen) {
-    panel.classList.add('open');
-    panel.scrollIntoView({behavior:'smooth', block:'nearest'});
-  }
+function toggleEditV(id){
+  const p=document.getElementById('editv-'+id);
+  const open=p.classList.contains('open');
+  document.querySelectorAll('.edit-panel.open').forEach(x=>x.classList.remove('open'));
+  if(!open){p.classList.add('open');p.scrollIntoView({behavior:'smooth',block:'nearest'});}
 }
-
-function closeEditV(id) {
-  document.getElementById('editv-' + id).classList.remove('open');
-}
-
-function previewThumb(input, previewId) {
-  const preview = document.getElementById(previewId);
-  if (!preview) return;
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = e => {
-      preview.src = e.target.result;
-      preview.style.display = 'block';
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
+function closeEditV(id){document.getElementById('editv-'+id).classList.remove('open');}
+function previewThumb(input,previewId){
+  const prev=document.getElementById(previewId);
+  if(!prev||!input.files[0])return;
+  const reader=new FileReader();
+  reader.onload=e=>{prev.src=e.target.result;prev.style.display='block';};
+  reader.readAsDataURL(input.files[0]);
 }
 </script>
 {% endblock %}

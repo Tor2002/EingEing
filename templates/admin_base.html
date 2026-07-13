@@ -9,171 +9,104 @@
     *{margin:0;padding:0;box-sizing:border-box}
     :root{--pink:#F4A7C0;--peach:#F9C4A8;--ink:#4A3F55;--muted:#9B8FA8;--border:rgba(74,63,85,0.12);--bg:#FDF6F0}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
-
-    /* ── LAYOUT ── */
     .layout{display:flex;min-height:100vh}
-
-    /* ── SIDEBAR (desktop) ── */
-    .sidebar{
-      width:210px;background:white;border-right:1px solid var(--border);
-      display:flex;flex-direction:column;
-      position:fixed;top:0;left:0;height:100vh;z-index:100;
-      transition:transform .25s;
-    }
+    .sidebar{width:210px;background:white;border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .25s}
     .sidebar-logo{padding:1.4rem 1.2rem 1rem;border-bottom:1px solid var(--border)}
     .sidebar-logo .logo{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--ink);text-decoration:none;display:block}
     .sidebar-logo .logo span{color:var(--pink);font-style:italic}
     .sidebar-logo .badge{font-size:.62rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
-    .sidebar-nav{flex:1;padding:.7rem 0;overflow-y:auto}
-    .nav-item{
-      display:flex;align-items:center;gap:.6rem;
-      padding:.65rem 1.2rem;font-size:.82rem;font-weight:500;
-      color:var(--muted);text-decoration:none;
-      transition:all .15s;border-left:3px solid transparent;
-    }
-    .nav-item:hover{color:var(--ink);background:rgba(244,167,192,0.08)}
-    .nav-item.active{color:var(--pink);background:rgba(244,167,192,0.1);border-left-color:var(--pink)}
+    .sidebar-nav{flex:1;padding:.7rem 0}
+    .nav-item{display:flex;align-items:center;gap:.6rem;padding:.65rem 1.2rem;font-size:.82rem;font-weight:500;color:var(--muted);text-decoration:none;transition:all .15s;border-left:3px solid transparent}
+    .nav-item:hover{color:var(--ink);background:rgba(244,167,192,.08)}
+    .nav-item.active{color:var(--pink);background:rgba(244,167,192,.1);border-left-color:var(--pink)}
     .nav-icon{font-size:.95rem;width:20px;text-align:center;flex-shrink:0}
     .sidebar-bottom{padding:.8rem 1.2rem;border-top:1px solid var(--border)}
-    .sidebar-bottom a{display:flex;align-items:center;gap:.55rem;font-size:.78rem;color:var(--muted);text-decoration:none;padding:.45rem 0;transition:color .15s}
+    .sidebar-bottom a{display:flex;align-items:center;gap:.55rem;font-size:.78rem;color:var(--muted);text-decoration:none;padding:.45rem 0}
     .sidebar-bottom a:hover{color:var(--ink)}
-
-    /* ── MAIN ── */
     .main{margin-left:210px;flex:1;padding:2rem;min-width:0}
     .page-title{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:1.4rem}
     .page-title span{color:var(--pink);font-style:italic}
-
-    /* ── SHARED COMPONENTS ── */
     .card{background:white;border-radius:12px;border:1px solid var(--border);padding:1.4rem;margin-bottom:1.1rem}
     .card h2{font-size:.92rem;font-weight:500;margin-bottom:1rem;color:var(--ink)}
     .btn{font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:500;padding:.45rem 1rem;border-radius:40px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;transition:all .2s}
     .btn-pink{background:linear-gradient(135deg,var(--pink),var(--peach));color:white}
     .btn-pink:hover{opacity:.88}
-    .btn-out{background:rgba(74,63,85,0.08);color:var(--ink)}
-    .btn-out:hover{background:rgba(74,63,85,0.14)}
+    .btn-out{background:rgba(74,63,85,.08);color:var(--ink)}
+    .btn-out:hover{background:rgba(74,63,85,.14)}
     .btn-red{background:#FCE4EC;color:#C05070}
     .btn-red:hover{background:#f8cdd9}
-    .btn-green{background:#E0F7F0;color:#2D7A5A}
     .btn-sm{font-size:.72rem;padding:.32rem .75rem}
     .fg{display:flex;flex-direction:column;gap:.3rem}
     .fg label{font-size:.67rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-    .fg input,.fg select,.fg textarea{
-      padding:.58rem .85rem;border:1px solid var(--border);border-radius:8px;
-      font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--ink);
-      background:white;width:100%;transition:border-color .2s;
-    }
+    .fg input,.fg select,.fg textarea{padding:.58rem .85rem;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--ink);background:white;width:100%;transition:border-color .2s}
     .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--pink)}
-    .fg textarea{resize:vertical;min-height:60px}
     table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
-    th{background:#FEF0F5;font-size:.66rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:.7rem 1rem;text-align:left;white-space:nowrap}
-    td{padding:.72rem 1rem;font-size:.84rem;border-top:1px solid rgba(74,63,85,0.06);vertical-align:middle}
+    th{background:#FEF0F5;font-size:.66rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:.7rem 1rem;text-align:left}
+    td{padding:.72rem 1rem;font-size:.84rem;border-top:1px solid rgba(74,63,85,.06);vertical-align:middle}
     tr:hover td{background:#fdf6f0}
     .era-badge{font-size:.63rem;font-weight:500;padding:.18rem .55rem;border-radius:40px;white-space:nowrap}
-    .era-intl_old{background:#EDE7FF;color:#7E6DB8}
-    .era-intl_new{background:#E0F0FF;color:#4A80B8}
-    .era-thai_old{background:#FFF0D8;color:#B87A30}
-    .era-thai_new{background:#FCE4EC;color:#D4607E}
-
-    /* ── MOBILE TOPBAR (hamburger) ── */
-    .mobile-topbar{
-      display:none;position:sticky;top:0;z-index:200;
-      background:white;border-bottom:1px solid var(--border);
-      padding:.5rem .85rem;
-      height:48px;
-      flex-direction:row;align-items:center;justify-content:space-between;
-    }
-    .mobile-logo{font-family:'DM Serif Display',serif;font-size:.95rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:.35rem;line-height:1}
+    .era-intl_old{background:#EDE7FF;color:#7E6DB8}.era-intl_new{background:#E0F0FF;color:#4A80B8}
+    .era-thai_old{background:#FFF0D8;color:#B87A30}.era-thai_new{background:#FCE4EC;color:#D4607E}
+    .desktop-table{display:table;width:100%}
+    .mobile-cards{display:none}
+    /* Mobile topbar */
+    .mobile-topbar{display:none;position:sticky;top:0;z-index:200;background:white;border-bottom:1px solid var(--border);padding:.5rem .85rem;height:48px;flex-direction:row;align-items:center;justify-content:space-between}
+    .mobile-logo{font-family:'DM Serif Display',serif;font-size:.95rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:.35rem}
     .mobile-logo span{color:var(--pink);font-style:italic}
-    .mobile-logo .admin-tag{font-family:'DM Sans',sans-serif;font-size:.58rem;color:var(--muted);font-style:normal;background:rgba(74,63,85,0.06);padding:.1rem .4rem;border-radius:8px}
-    .hamburger{background:none;border:none;cursor:pointer;padding:.4rem;margin:-.4rem;display:flex;flex-direction:column;gap:4px;justify-content:center;width:36px;height:36px}
+    .admin-tag{font-family:'DM Sans',sans-serif;font-size:.58rem;color:var(--muted);font-style:normal;background:rgba(74,63,85,.06);padding:.1rem .4rem;border-radius:8px}
+    .hamburger{background:none;border:none;cursor:pointer;padding:.4rem;margin:-.4rem;display:flex;flex-direction:column;gap:4px;width:36px;height:36px;justify-content:center}
     .hamburger span{display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;transition:all .25s}
     .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
     .hamburger.open span:nth-child(2){opacity:0}
     .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
-
-    /* overlay */
-    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(74,63,85,0.4);z-index:90}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(74,63,85,.4);z-index:90}
     .sidebar-overlay.open{display:block}
-
-    /* ── MOBILE ── */
     @media(max-width:700px){
       .sidebar{transform:translateX(-100%)}
-      .sidebar.open{transform:translateX(0);box-shadow:4px 0 24px rgba(74,63,85,0.15)}
+      .sidebar.open{transform:translateX(0);box-shadow:4px 0 24px rgba(74,63,85,.15)}
       .mobile-topbar{display:flex}
       .main{margin-left:0;padding:.85rem .75rem 5rem;max-width:100vw;overflow-x:hidden}
       .page-title{font-size:1.1rem;margin-bottom:.75rem}
       .card{padding:.9rem;border-radius:10px}
-      .desktop-table{display:none}
-    }
-    .mobile-cards{display:none}
-    @media(max-width:700px){
+      .desktop-table{display:none !important}
       .mobile-cards{display:flex;flex-direction:column;gap:.6rem}
     }
   </style>
   {% block head %}{% endblock %}
 </head>
 <body>
-
 <div class="layout">
-
-  <!-- Mobile topbar -->
   <div class="mobile-topbar">
     <a href="/admin/dashboard" class="mobile-logo">Eing<span>Eing</span><span class="admin-tag">Admin</span></a>
-    <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" id="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
   </div>
-
-  <!-- Overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <a href="/admin/dashboard" class="logo">Eing<span>Eing</span></a>
       <div class="badge">Admin Panel</div>
     </div>
     <nav class="sidebar-nav">
-      <a href="/admin/dashboard" class="nav-item {% if active=='dashboard' %}active{% endif %}">
-        <span class="nav-icon">📋</span>Requests
-      </a>
-      <a href="/admin/songs" class="nav-item {% if active=='songs' %}active{% endif %}">
-        <span class="nav-icon">🎵</span>จัดการเพลง
-      </a>
-      <a href="/admin/schedule" class="nav-item {% if active=='schedule' %}active{% endif %}">
-        <span class="nav-icon">📅</span>ตารางงาน
-      </a>
-      <a href="/admin/videos" class="nav-item {% if active=='videos' %}active{% endif %}">
-        <span class="nav-icon">🎬</span>Videos
-      </a>
+      <a href="/admin/dashboard" class="nav-item {% if active=='dashboard' %}active{% endif %}"><span class="nav-icon">📋</span>Requests</a>
+      <a href="/admin/songs"     class="nav-item {% if active=='songs'     %}active{% endif %}"><span class="nav-icon">🎵</span>จัดการเพลง</a>
+      <a href="/admin/schedule"  class="nav-item {% if active=='schedule'  %}active{% endif %}"><span class="nav-icon">📅</span>ตารางงาน</a>
+      <a href="/admin/videos"    class="nav-item {% if active=='videos'    %}active{% endif %}"><span class="nav-icon">🎬</span>Videos</a>
     </nav>
     <div class="sidebar-bottom">
       <a href="/" target="_blank">🌐 ดูหน้าเว็บ</a>
       <a href="/admin/logout">🚪 ออกจากระบบ</a>
     </div>
   </aside>
-
-  <!-- Main -->
-  <main class="main">
-    {% block content %}{% endblock %}
-  </main>
-
+  <main class="main">{% block content %}{% endblock %}</main>
 </div>
-
 <script>
-function toggleSidebar() {
-  const sb = document.getElementById('sidebar');
-  const ov = document.getElementById('sidebarOverlay');
-  const hb = document.getElementById('hamburger');
-  sb.classList.toggle('open');
-  ov.classList.toggle('open');
-  hb.classList.toggle('open');
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
 }
-// Close sidebar when nav item clicked on mobile
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    if (window.innerWidth <= 700) toggleSidebar();
-  });
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',()=>{ if(window.innerWidth<=700) toggleSidebar(); });
 });
 </script>
 {% block scripts %}{% endblock %}

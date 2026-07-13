@@ -7,61 +7,34 @@
   .edit-panel.open{display:block}
   .edit-row{display:grid;grid-template-columns:1fr 1fr auto auto;gap:.6rem;align-items:end}
   .count{font-size:.78rem;color:var(--muted);margin-bottom:.8rem}
-  .td-actions{display:flex;gap:.4rem;flex-wrap:wrap}
-
   .song-card{background:white;border-radius:12px;border:1px solid var(--border);padding:.9rem 1rem}
   .song-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem;margin-bottom:.5rem}
-  .song-card-title{font-weight:500;font-size:.92rem;color:var(--ink)}
-  .song-card-artist{font-size:.78rem;color:var(--muted);margin-top:1px}
-  .song-card-num{font-size:.68rem;color:var(--muted);flex-shrink:0;padding-top:2px}
+  .song-card-title{font-weight:500;font-size:.92rem}.song-card-artist{font-size:.78rem;color:var(--muted);margin-top:1px}
+  .song-card-num{font-size:.68rem;color:var(--muted);flex-shrink:0}
   .song-card-actions{display:flex;gap:.4rem;margin-top:.6rem}
   .mobile-edit-row{display:flex;flex-direction:column;gap:.6rem}
-
-  @media(max-width:600px){
-    .form-row{grid-template-columns:1fr 1fr}
-    .form-row .btn-submit{grid-column:1/-1}
-  }
+  @media(max-width:600px){.form-row,.edit-row{grid-template-columns:1fr 1fr}}
 </style>
 {% endblock %}
 {% block content %}
   <div class="page-title">จัดการ<span>เพลง</span></div>
-
   <div class="card">
     <h2>➕ เพิ่มเพลงใหม่</h2>
     <form method="POST" action="/admin/songs/add">
       <div class="form-row">
-        <div class="fg">
-          <label>ชื่อเพลง *</label>
-          <input name="title" required placeholder="เช่น ลมหายใจ">
-        </div>
-        <div class="fg">
-          <label>ศิลปิน *</label>
-          <input name="artist" required placeholder="เช่น EingEing">
-        </div>
-        <div class="fg">
-          <label>ยุค</label>
-          <select name="era">
-            <option value="intl_old">🌍 สากล 80's–90's</option>
-            <option value="intl_new">🌍 สากล 2000's+</option>
-            <option value="thai_old">🇹🇭 ไทย 80's–90's</option>
-            <option value="thai_new" selected>🇹🇭 ไทย 2000's+</option>
-          </select>
-        </div>
-        <div class="fg btn-submit">
-          <label>&nbsp;</label>
-          <button type="submit" class="btn btn-pink">+ เพิ่ม</button>
-        </div>
+        <div class="fg"><label>ชื่อเพลง *</label><input name="title" required placeholder="เช่น ลมหายใจ"></div>
+        <div class="fg"><label>ศิลปิน *</label><input name="artist" required placeholder="เช่น EingEing"></div>
+        <div class="fg"><label>ยุค</label><select name="era">
+          <option value="intl_old">🌍 สากล 80's–90's</option><option value="intl_new">🌍 สากล 2000's+</option>
+          <option value="thai_old">🇹🇭 ไทย 80's–90's</option><option value="thai_new" selected>🇹🇭 ไทย 2000's+</option>
+        </select></div>
+        <div class="fg"><label>&nbsp;</label><button type="submit" class="btn btn-pink">+ เพิ่ม</button></div>
       </div>
     </form>
   </div>
-
   <div class="count">ทั้งหมด {{ songs|length }} เพลง</div>
-
-  <!-- DESKTOP table -->
   <table class="desktop-table">
-    <thead>
-      <tr><th style="width:36px">#</th><th>ชื่อเพลง</th><th>ศิลปิน</th><th>ยุค</th><th>จัดการ</th></tr>
-    </thead>
+    <thead><tr><th style="width:36px">#</th><th>ชื่อเพลง</th><th>ศิลปิน</th><th>ยุค</th><th>จัดการ</th></tr></thead>
     <tbody>
       {% for s in songs %}
       <tr>
@@ -73,68 +46,43 @@
               <div class="edit-row">
                 <div class="fg"><label>ชื่อเพลง</label><input name="title" value="{{ s.title }}" required></div>
                 <div class="fg"><label>ศิลปิน</label><input name="artist" value="{{ s.artist }}" required></div>
-                <div class="fg">
-                  <label>ยุค</label>
-                  <select name="era">
-                    <option value="intl_old" {% if s.era=='intl_old' %}selected{% endif %}>🌍 สากล 80's–90's</option>
-                    <option value="intl_new" {% if s.era=='intl_new' %}selected{% endif %}>🌍 สากล 2000's+</option>
-                    <option value="thai_old" {% if s.era=='thai_old' %}selected{% endif %}>🇹🇭 ไทย 80's–90's</option>
-                    <option value="thai_new" {% if s.era=='thai_new' %}selected{% endif %}>🇹🇭 ไทย 2000's+</option>
-                  </select>
-                </div>
-                <div class="fg btn-submit">
-                  <label>&nbsp;</label>
-                  <div style="display:flex;gap:.4rem">
-                    <button type="submit" class="btn btn-pink btn-sm">💾 บันทึก</button>
-                    <button type="button" class="btn btn-out btn-sm" onclick="closeEdit('d-{{ s.id }}')">ยกเลิก</button>
-                  </div>
-                </div>
+                <div class="fg"><label>ยุค</label><select name="era">
+                  <option value="intl_old" {% if s.era=='intl_old' %}selected{% endif %}>🌍 สากล 80's</option>
+                  <option value="intl_new" {% if s.era=='intl_new' %}selected{% endif %}>🌍 สากล 2000's+</option>
+                  <option value="thai_old" {% if s.era=='thai_old' %}selected{% endif %}>🇹🇭 ไทย 80's</option>
+                  <option value="thai_new" {% if s.era=='thai_new' %}selected{% endif %}>🇹🇭 ไทย 2000's+</option>
+                </select></div>
+                <div class="fg"><label>&nbsp;</label><div style="display:flex;gap:.4rem">
+                  <button type="submit" class="btn btn-pink btn-sm">💾</button>
+                  <button type="button" class="btn btn-out btn-sm" onclick="closeEdit('d-{{ s.id }}')">✕</button>
+                </div></div>
               </div>
             </form>
           </div>
         </td>
         <td style="color:var(--muted);font-size:.82rem">{{ s.artist }}</td>
-        <td>
-          <span class="era-badge era-{{ s.era }}">
-            {% if s.era=='intl_old' %}สากล 80's
-            {% elif s.era=='intl_new' %}สากล 2000's+
-            {% elif s.era=='thai_old' %}ไทย 80's
-            {% else %}ไทย 2000's+{% endif %}
-          </span>
-        </td>
-        <td>
-          <div class="td-actions">
-            <button type="button" class="btn btn-out btn-sm" onclick="toggleEdit('d-{{ s.id }}')">✏️ แก้ไข</button>
-            <form method="POST" action="/admin/songs/delete/{{ s.id }}" onsubmit="return confirm('ลบเพลง {{ s.title }}?')">
-              <button type="submit" class="btn btn-red btn-sm">🗑</button>
-            </form>
-          </div>
-        </td>
+        <td><span class="era-badge era-{{ s.era }}">{% if s.era=='intl_old' %}สากล 80's{% elif s.era=='intl_new' %}สากล 2000's+{% elif s.era=='thai_old' %}ไทย 80's{% else %}ไทย 2000's+{% endif %}</span></td>
+        <td><div style="display:flex;gap:.4rem">
+          <button type="button" class="btn btn-out btn-sm" onclick="toggleEdit('d-{{ s.id }}')">✏️</button>
+          <form method="POST" action="/admin/songs/delete/{{ s.id }}" onsubmit="return confirm('ลบ {{ s.title }}?')">
+            <button type="submit" class="btn btn-red btn-sm">🗑</button>
+          </form>
+        </div></td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-
-  <!-- MOBILE card list -->
   <div class="mobile-cards">
     {% for s in songs %}
     <div class="song-card">
       <div class="song-card-top">
-        <div>
-          <div class="song-card-title">{{ s.title }}</div>
-          <div class="song-card-artist">{{ s.artist }}</div>
-        </div>
+        <div><div class="song-card-title">{{ s.title }}</div><div class="song-card-artist">{{ s.artist }}</div></div>
         <div class="song-card-num">#{{ loop.index }}</div>
       </div>
-      <span class="era-badge era-{{ s.era }}">
-        {% if s.era=='intl_old' %}สากล 80's
-        {% elif s.era=='intl_new' %}สากล 2000's+
-        {% elif s.era=='thai_old' %}ไทย 80's
-        {% else %}ไทย 2000's+{% endif %}
-      </span>
+      <span class="era-badge era-{{ s.era }}">{% if s.era=='intl_old' %}สากล 80's{% elif s.era=='intl_new' %}สากล 2000's+{% elif s.era=='thai_old' %}ไทย 80's{% else %}ไทย 2000's+{% endif %}</span>
       <div class="song-card-actions">
         <button type="button" class="btn btn-out btn-sm" onclick="toggleEdit('m-{{ s.id }}')">✏️ แก้ไข</button>
-        <form method="POST" action="/admin/songs/delete/{{ s.id }}" onsubmit="return confirm('ลบเพลง {{ s.title }}?')">
+        <form method="POST" action="/admin/songs/delete/{{ s.id }}" onsubmit="return confirm('ลบ {{ s.title }}?')">
           <button type="submit" class="btn btn-red btn-sm">🗑 ลบ</button>
         </form>
       </div>
@@ -143,15 +91,12 @@
           <div class="mobile-edit-row">
             <div class="fg"><label>ชื่อเพลง</label><input name="title" value="{{ s.title }}" required></div>
             <div class="fg"><label>ศิลปิน</label><input name="artist" value="{{ s.artist }}" required></div>
-            <div class="fg">
-              <label>ยุค</label>
-              <select name="era">
-                <option value="intl_old" {% if s.era=='intl_old' %}selected{% endif %}>🌍 สากล 80's–90's</option>
-                <option value="intl_new" {% if s.era=='intl_new' %}selected{% endif %}>🌍 สากล 2000's+</option>
-                <option value="thai_old" {% if s.era=='thai_old' %}selected{% endif %}>🇹🇭 ไทย 80's–90's</option>
-                <option value="thai_new" {% if s.era=='thai_new' %}selected{% endif %}>🇹🇭 ไทย 2000's+</option>
-              </select>
-            </div>
+            <div class="fg"><label>ยุค</label><select name="era">
+              <option value="intl_old" {% if s.era=='intl_old' %}selected{% endif %}>🌍 สากล 80's</option>
+              <option value="intl_new" {% if s.era=='intl_new' %}selected{% endif %}>🌍 สากล 2000's+</option>
+              <option value="thai_old" {% if s.era=='thai_old' %}selected{% endif %}>🇹🇭 ไทย 80's</option>
+              <option value="thai_new" {% if s.era=='thai_new' %}selected{% endif %}>🇹🇭 ไทย 2000's+</option>
+            </select></div>
             <div style="display:flex;gap:.5rem">
               <button type="submit" class="btn btn-pink btn-sm" style="flex:1">💾 บันทึก</button>
               <button type="button" class="btn btn-out btn-sm" style="flex:1" onclick="closeEdit('m-{{ s.id }}')">ยกเลิก</button>
@@ -165,18 +110,12 @@
 {% endblock %}
 {% block scripts %}
 <script>
-function toggleEdit(id) {
-  const panel = document.getElementById('edit-' + id);
-  const isOpen = panel.classList.contains('open');
-  document.querySelectorAll('.edit-panel.open').forEach(p => p.classList.remove('open'));
-  if (!isOpen) {
-    panel.classList.add('open');
-    const firstInput = panel.querySelector('input');
-    if (firstInput) firstInput.focus();
-  }
+function toggleEdit(id){
+  const p=document.getElementById('edit-'+id);
+  const open=p.classList.contains('open');
+  document.querySelectorAll('.edit-panel.open').forEach(x=>x.classList.remove('open'));
+  if(!open){p.classList.add('open');p.querySelector('input').focus();}
 }
-function closeEdit(id) {
-  document.getElementById('edit-' + id).classList.remove('open');
-}
+function closeEdit(id){document.getElementById('edit-'+id).classList.remove('open');}
 </script>
 {% endblock %}
